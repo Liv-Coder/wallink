@@ -1,0 +1,24 @@
+name: Public CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  lint-and-validate:
+    name: Validate Marketing Docs & Links
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Verify Documentation Structure
+        run: |
+          echo "Verifying required marketing & release files..."
+          test -f README.md || (echo "README.md missing" && exit 1)
+          test -f CHANGELOG.md || (echo "CHANGELOG.md missing" && exit 1)
+          test -f LICENSE || (echo "LICENSE missing" && exit 1)
+          test -f .github/workflows/release.yml || (echo "release.yml missing" && exit 1)
+          echo "All public showcase assets verified."
